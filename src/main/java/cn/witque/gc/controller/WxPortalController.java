@@ -78,12 +78,8 @@ public class WxPortalController {
         if (encType == null) {
             // 明文传输的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-            WxMpXmlOutMessage outMessage = new WxMpXmlOutTextMessage();
-            if (outMessage == null) {
-                return "";
-            }
-
-            ((WxMpXmlOutTextMessage) outMessage).setContent("收到消息："+ inMessage.getContent());
+            inMessage.setOpenId(openid);
+            WxMpXmlOutMessage outMessage = this.route(inMessage);
             out = outMessage.toXml();
         } else if ("aes".equalsIgnoreCase(encType)) {
             // aes加密的消息
